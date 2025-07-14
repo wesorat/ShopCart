@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'account/css/base.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'account/css/base.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="update-account-page">
+    <div class="update-account-container">
+        <div class="update-account-header">
+            <h3><i class="fas fa-user-edit"></i> Update your account</h3>
+        </div>
+
+        <div class="update-account-body">
+            <form method="post" class="update-account-form">
+                {% csrf_token %}
+                {{ form|crispy }}
+
+                <button type="submit" class="btn-update-account">
+                    <i class="fas fa-save"></i> Update Account
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

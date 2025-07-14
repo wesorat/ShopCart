@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.name|default:"Все товары" }} - Мой магазин{% endblock %}
+
+{% block content %}
+<div class="products-container">
+    <div class="category-header">
+        <h2 class="products-title">{{ category.name|default:"Все товары" }}</h2>
+        {% if category.description %}
+        <div class="category-description">
+            {{ category.description|linebreaks }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="products-grid">
+        {% for product in products %}
+        <a href="{{ product.get_absolute_url }}" class="product-card-link">
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}" class="product-image">
+                    {% if product.discount %}
+                        <span class="discount-badge">-{{ product.discount }}%</span>
+                    {% endif %}
+                    {% if not product.available %}
+                    <span class="out-of-stock-badge">Нет в наличии</span>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">{{ product.title }}</h3>
+                    <div class="price-block">
+                        {% if product.discount %}
+                        <span class="price-old">{{ product.price }} ₽</span>
+                        <span class="price-new">{{ product.get_discounted_price }} ₽</span>
+                        {% else %}
+                        <span class="price-current">{{ product.price }} ₽</span>
+                        {% endif %}
+                    </div>
+                    <button class="add-to-cart" {% if not product.available %}disabled{% endif %}>
+                        {{ product.available|yesno:"В корзину,Нет в наличии" }}
+                    </button>
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <p class="no-products">Товары не найдены</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

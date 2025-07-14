@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Мой магазин{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'shop/css/base.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'shop/images/favicon.ico' %}"/>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-search">
+                <a href="/shop"> <h1>Мой магазин</h1> </a>
+                <form action="{% url 'shop:search-products' %}" method="get" class="search-form">
+                    <input type="text" name="q" placeholder="Поиск товаров..." value="{{ request.GET.q }}">
+                    <button type="submit">🔍</button>
+                </form>
+            </div>
+
+            <div class="header-right">
+                <nav class="categories-nav">
+                    <ul class="main-categories">
+                        {% for category in categories %}
+                        <li class="category-item">
+                            <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+                            {% if category.children.all %}
+                            <ul class="subcategories">
+                                {% for child in category.children.all %}
+                                <li><a href="{{ child.get_absolute_url }}">{{ child.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+
+
+            </div>
+            <div class="header-icons">
+                    <a href="{% url 'account:dashboard' %}" class="account-icon">👤</a>
+                    <a href="{% url 'cart:cart' %}" class="cart-icon">🛒</a>
+                </div>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+
+</body>
+
+</html>

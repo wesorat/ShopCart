@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<br>
+
+<div class="container bg-white shadow-md p-3 form-layout">
+{% if success %}
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Электронная почта подвтерждена!</h4>
+        <p>
+            Ваш адрес электронной почты подтвержден. Спасибо за регистрацию!
+
+        </p>
+    </div>
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Ошибка подтверждения по электронной почте</h4>
+        <p>Ссылка для подтверждения по электронной почте недействительна или срок ее действия истек. Пожалуйста, зарегистрируйтесь снова.</p>
+    </div>
+{% endif %}
+
+
+</div>
+
+<br>
+
+{% endblock %}

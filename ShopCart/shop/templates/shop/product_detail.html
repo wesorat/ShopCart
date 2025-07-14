@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.title }} - Мой магазин{% endblock %}
+
+{% block content %}
+<div class="product-detail-container">
+    <div class="breadcrumbs">
+        <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a> &gt;
+        <span>{{ product.title }}</span>
+    </div>
+
+    <div class="product-main">
+        <div class="product-gallery">
+            <div class="main-image">
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="active">
+            </div>
+        </div>
+
+        <div class="product-info">
+            <h1 class="product-title">{{ product.title }}</h1>
+            <div class="product-meta">
+                <span class="brand">Бренд: {{ product.brand }}</span>
+                <span class="sku">Артикул: {{ product.id }}</span>
+                <span class="availability {% if product.available %}in-stock{% else %}out-of-stock{% endif %}">
+                    {{ product.available|yesno:"В наличии,Нет в наличии" }}
+                </span>
+            </div>
+
+            <div class="price-block">
+                {% if product.discount %}
+                <div class="price-old">{{ product.price }} ₽</div>
+                <div class="price-new">
+                    {{ product.get_discounted_price }} ₽
+                </div>
+                {% else %}
+                <div class="price-current">{{ product.price }} ₽</div>
+                {% endif %}
+            </div>
+
+            <div class="product-actions">
+                <form action="{% url 'cart:add_to_cart' %}" method="post">
+                    {% csrf_token %}
+                    <div class="quantity-selector">
+                        <select name="count" class="quantity-select">
+                            <option value="1">1 шт</option>
+                            <option value="2">2 шт</option>
+                            <option value="3">3 шт</option>
+                            <option value="4">4 шт</option>
+                        </select>
+                    </div>
+
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <button type="submit" class="add-to-cart-btn" {% if not product.available %}disabled{% endif %}>
+                        Добавить в корзину
+                    </button>
+                </form>
+                <button class="favorite-btn">
+                    <span class="heart-icon">♡</span>
+                </button>
+            </div>
+
+            <div class="product-description">
+                <h3>Описание</h3>
+                <p>{{ product.description|linebreaks }}</p>
+            </div>
+
+            <div class="product-details">
+                <h3>Характеристики</h3>
+                <table class="specs-table">
+                    <tr>
+                        <td>Категория</td>
+                        <td><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></td>
+                    </tr>
+                    <tr>
+                        <td>Бренд</td>
+                        <td>{{ product.brand }}</td>
+                    </tr>
+                    <tr>
+                        <td>Дата добавления</td>
+                        <td>{{ product.created_at|date:"d.m.Y" }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+
+     {% include 'recommend/recommendation.html' %}
+
+</div>
+
+{% endblock %}
+

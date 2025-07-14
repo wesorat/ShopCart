@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'cart/css/base.css' %}">
+<div class="cart-container">
+  <h1 class="cart-title">Your Shopping Cart</h1>
+  <div class="cart-header">
+    <span class="item-count">{{ cart|length }} items</span>
+  </div>
+
+  {% for item in cart %}
+  <div class="cart-item">
+    <div class="item-content">
+      <div class="item-image-container">
+        <img src="{{ item.product.full_image_url }}"
+             alt="{{ item.product.title }}"
+             class="item-image">
+      </div>
+
+      <div class="item-details">
+        <h2 class="product-title">
+          <a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a>
+        </h2>
+        <p class="product-brand">{{ item.product.brand }}</p>
+
+        <div class="quantity-controls">
+          <form class="update-form" method="post" action="{% url 'cart:cart_update' %}">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ item.product.id }}">
+            <select name="count" class="quantity-select">
+              {% for i in "1234" %}
+              <option value="{{ i }}" {% if i|add:0 == item.count %}selected{% endif %}>{{ i }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="update-btn">Update</button>
+          </form>
+
+
+           <form class="remove-form" method="post" action="{% url 'cart:cart_remove' %}">
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ item.product.id }}">
+              <button type="submit" class="remove-btn">Delete</button>
+            </form>
+        </div>
+      </div>
+
+      <div class="price-info">
+        {% if item.product.discount %}
+        <div class="discount-price">
+          <span class="current-price">{{ item.product.get_discounted_price }}</span>
+          <span class="discount-badge">Save {{ item.product.discount }}%</span>
+        </div>
+        {% else %}
+        <div class="normal-price">{{ item.price }}</div>
+        {% endif %}
+        <div class="subtotal">Subtotal: {{ item.total }}</div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="empty-cart">
+    <div class="empty-icon">🛒</div>
+    <p>Your cart is empty</p>
+    <a href="/shop" class="continue-shopping">Continue Shopping</a>
+  </div>
+  {% endfor %}
+
+  {% if cart %}
+  <div class="order-summary">
+    <h3>Order Summary</h3>
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <span>{{ cart.get_subtotal_price }}</span>
+    </div>
+    <div class="summary-row">
+      <span>Shipping</span>
+      <span>Free</span>
+    </div>
+    <div class="summary-row">
+      <span>Tax</span>
+      <span>{{ cart.get_tax }}</span>
+    </div>
+    <div class="total-row">
+      <span>Total</span>
+      <span class="total-price">{{ cart.get_total_price }}</span>
+    </div>
+    <button class="checkout-btn"><a href="{% url 'payment:checkout' %}"> Secure Checkout</a></button>
+    <a href="/shop class="continue-link">← Continue Shopping</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

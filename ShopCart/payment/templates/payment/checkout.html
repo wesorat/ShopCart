@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block content %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'payment/css/base.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+<div class="order-page">
+    <div class="order-container">
+        <form id="form" action="{% url 'payment:complete-order' %}" method="post">
+            <div class="order-header">
+                <h3><i class="fas fa-chevron-circle-right"></i> Complete your order</h3>
+                <p>Please enter in the relevant information below.</p>
+                <div class="order-divider"></div>
+            </div>
+
+            <div class="form-field">
+                <input class="form-control validate" id="name" name="full_name" type="text" placeholder="Full name*" autocomplete="off" value="{{shipping_address.full_name}}" required>
+            </div>
+
+            <div class="form-field">
+                <input class="form-control validate" id="email" name="email" type="email" placeholder="Email address*" autocomplete="off" value="{{shipping_address.email}}" required>
+            </div>
+
+            <div class="form-field">
+                <input class="form-control validate" id="address1" name="street_address" type="text" placeholder="Street address*" autocomplete="off" value="{{shipping_address.street_address}}" required>
+            </div>
+
+            <div class="form-field">
+                <input class="form-control validate" id="address2" name="apartment_address" type="text" placeholder="Apartment address" autocomplete="off" value="{{shipping_address.apartment_address}}">
+            </div>
+
+            <div class="form-field">
+                <input class="form-control" id="state" name="country" type="text" placeholder="Country" autocomplete="off" value="{{shipping_address.country}}">
+            </div>
+
+            <div class="form-field">
+                <input class="form-control" id="zipcode" name="zip_code" type="text" placeholder="Zip code (Optional)" autocomplete="off" value="{{shipping_address.zip_code}}">
+            </div>
+
+            {% csrf_token %}
+            <div class="form-field" style="margin-top: 30px;">
+                <button id="complete-order-stripe" type="submit" class="btn-payment" name="stripe-payment" value="stripe-payment">
+                    <i class="fab fa-cc-stripe"></i> Pay with Stripe
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

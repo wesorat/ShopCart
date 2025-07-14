@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'account/css/base.css' %}">
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <h4>Welcome, {{ user.username }}! <i class="fas fa-smile"></i></h4>
+            <div class="profile-divider"></div>
+            <h6 class="profile-section-title">Personal information</h6>
+            <p>Email: {{ user.email }}</p>
+            <p>Last login: {{ user.last_login|date:"d M Y H:i" }}</p>
+        </div>
+
+        <div class="profile-actions">
+            <a href="{% url 'account:logout-user' %}" class="profile-btn btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+
+            <a href="{% url 'account:profile-user' %}" class="profile-btn btn-profile">
+                <i class="fas fa-user-cog"></i> Profile Management
+            </a>
+
+            <a href="{% url 'account:delete-user' %}" class="profile-btn btn-delete">
+                <i class="fas fa-trash-alt"></i> Delete Account
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
