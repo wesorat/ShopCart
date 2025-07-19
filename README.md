@@ -26,7 +26,7 @@ Stripe payments
 
 Celery background tasks
 
-Redis caching
+Redis caching and task queue  
 
 Django REST API
 
