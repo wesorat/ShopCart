@@ -19,7 +19,7 @@ Django e-commerce platform with Stripe payments, Celery tasks and Redis caching.
   Create superuser and generate test products:
    ```bash
    python manage.py createsuperuser
-   python manage.py fakeproducts
+   python manage.py fake_products
 
 ## Key Features
 Stripe payments
