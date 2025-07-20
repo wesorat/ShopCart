@@ -2,7 +2,7 @@
 
 Django e-commerce platform with Stripe payments, Celery tasks and Redis caching.
 
-## Local Setup (Windows)
+## Local Setup
 
 ### Without Docker:
 1. Start services in separate terminals:
@@ -15,7 +15,7 @@ Django e-commerce platform with Stripe payments, Celery tasks and Redis caching.
    ```bash
    python manage.py runserver
 
-4. First-Time Setup
+3. First-Time Setup
   Create superuser and generate test products:
    ```bash
    python manage.py createsuperuser
