@@ -11,14 +11,24 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         fake = Faker()
 
-        for _ in range(30):
+        categories = []
+        for j in range(3):
+            category = Category(
+                name='default' + str(j),
+                slug='default' + str(j),
+            )
+            category.save()
+            categories.append(category)
+
+
+        for i in range(30):
             product_title = fake.company()
             product_brand = fake.company()
             product_description = fake.paragraph(nb_sentences=2)
             product_price = fake.pydecimal(
                 left_digits=3, right_digits=2, min_value=1, max_value=999.99)
             product = Product(
-                category=Category.objects.first(),
+                category=categories[i % 3],
                 title=product_title,
                 brand=product_brand,
                 description=product_description,

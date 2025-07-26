@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
 from .models import Category, ProductProxy
+from django.views.decorators.cache import cache_page
 
 
+@cache_page(60 * 15)
 def products_view(request):
     products = ProductProxy.objects.all()
     return render(request, 'shop/products.html', {'products': products})
