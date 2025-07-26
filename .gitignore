@@ -101,6 +101,7 @@ celerybeat-schedule.*
 # Environments
 ShopCart/.env
 .venv
+.env
 env/
 venv/
 ENV/
